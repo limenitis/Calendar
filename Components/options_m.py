@@ -1,20 +1,20 @@
 class Options():
     
     def new_event(self):
-        pass
-
+        print('new_event work')
+        
     def new_task(self):
-        pass
-
+        print('new_task work')
+        
     def change_layoyt_calendar(self):
-        pass
+        print('change_layoyt_calendar work')
 
     def change_layoyt_tasks(self):
-        pass
+        print('change_layoyt_tasks work')
 
     def delete_task(self):
-        pass
+        print('delete_task work')
 
     def update_task(self):
-        pass
-
+        print('update_task work')
+        

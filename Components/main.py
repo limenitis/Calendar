@@ -37,10 +37,11 @@ class CalendarApp(App):
         # Main window
         root = BoxLayout(spacing = 3)
 
+        # Calendar window
         row = 6
         col = 7
-        months = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)
         GridL = GridLayout(rows = row, cols = col, spacing = 3)
+        months = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)
         for i in range(row-1):
             for j in range(col):
                 GridL.add_widget( 
@@ -53,11 +54,11 @@ class CalendarApp(App):
         # Menu window
         Menu = BoxLayout(size_hint = (.2, 1), )
         Opt = Options()
-        options = {
-            1 : Opt.new_event(),
-            2 : Opt.new_task(),
-            3 : Opt.change_layoyt_calendar(),
-            4 : Opt.change_layoyt_tasks()
+        option = {
+            1 : lambda x: Opt.new_event(),
+            2 : lambda x: Opt.new_task(),
+            3 : lambda x: Opt.change_layoyt_calendar(),
+            4 : lambda x: Opt.change_layoyt_tasks()
         }
         name_options = {
             1 : 'Новое событие',
@@ -68,8 +69,7 @@ class CalendarApp(App):
 
         Menu_options = GridLayout(rows = 10, cols = 1, spacing = 3)
         for i in range(1, len(name_options)+1):
-            Menu_options.add_widget( Button(text = name_options[i]) )
-            # Menu_options.add_widget( Button(text = ' ', on_press = lambda x: Opt.test() ) )
+            Menu_options.add_widget( Button(text = name_options[i], on_press = option[i]) )
         Menu.add_widget(Menu_options)
 
 
