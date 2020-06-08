@@ -1,8 +1,9 @@
 # ++++++++++++++++++++++++++++++++++++++++++++
 # components
-from options_m import *
-from calendar_m import *
 import calendar
+from datetime import datetime
+from options_m import *
+# from calendar_m import *
 # ++++++++++++++++++++++++++++++++++++++++++++
 # config window
 from kivy.config import Config
@@ -34,35 +35,47 @@ class CalendarApp(App):
         #self.icon = 'myicon.png'
 
         # Main window
-        BoxL = BoxLayout(spacing = 3)
+        root = BoxLayout(spacing = 3)
 
-        # Board window
-        BoardL = BoxLayout(size_hint = (.2, 1), )
-        
-        # Calendar window
-        Cal = Calendar()
-        GridL = GridLayout(rows = 6, cols = 7, spacing = 3)
-        count_days = Cal.count_days(Cal.current_month()) + 1
-        for i in range(1, count_days):
-            GridL.add_widget( 
-                Button  (
-                text = str(i),
-                #on_press = Cal.day_on_display() 
-                        )   
-                            )
+        row = 6
+        col = 7
+        months = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)
+        GridL = GridLayout(rows = row, cols = col, spacing = 3)
+        for i in range(row-1):
+            for j in range(col):
+                GridL.add_widget( 
+                    Button  (
+                    text = str(months[i][j])
+                    #on_press = Cal.day_on_display() 
+                            )   
+                                )
 
         # Menu window
+        Menu = BoxLayout(size_hint = (.2, 1), )
         Opt = Options()
+        options = {
+            1 : Opt.new_event(),
+            2 : Opt.new_task(),
+            3 : Opt.change_layoyt_calendar(),
+            4 : Opt.change_layoyt_tasks()
+        }
+        name_options = {
+            1 : 'Новое событие',
+            2 : 'Новое дело',
+            3 : 'Окно с календарем',
+            4 : 'Окно с делами'
+        }
+
         Menu_options = GridLayout(rows = 10, cols = 1, spacing = 3)
-        for opt in list_opt:
-            Menu_options.add_widget( Button(text = ' ') )
+        for i in range(1, len(name_options)+1):
+            Menu_options.add_widget( Button(text = name_options[i]) )
             # Menu_options.add_widget( Button(text = ' ', on_press = lambda x: Opt.test() ) )
+        Menu.add_widget(Menu_options)
 
 
-        BoardL.add_widget(Menu_options)
-        BoxL.add_widget(BoardL)
-        BoxL.add_widget(GridL)
-        return BoxL
+        root.add_widget(Menu)
+        root.add_widget(GridL)
+        return root
 
 
 if __name__ == "__main__":
