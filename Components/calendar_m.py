@@ -1,37 +1,31 @@
 from datetime import datetime
+import calendar
 
-class Calendar():
-    year_on_display = datetime.now().year
+def days_in_month():
+    last_month = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)
+    month = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)    
 
-    month_on_display = datetime.now().month
+    # change end current month
+    c = 1
+    for i in month[-1]:
+        if i == 0:
+            month[-1][month[-1].index(i)] = c
+            c += 1
 
-    day_on_display = datetime.now().day
+    # find end last month
+    c = 0
+    end_last_month = []
+    for i in last_month[-1]:
+        if i != 0:
+            end_last_month.append(i)
+            print(end_last_month)
 
-    highlight_day = datetime.now().day
+    # change first week in current month
+    c = 0 
+    for i in month[0]:
+        if i == 0:
+            month[0][month[0].index(i)] = end_last_month[c]
+            c += 1
 
-    def current_year(self):
-        return datetime.now().year
-    
-    def current_month(self):
-        return datetime.now().month
-    
-    def current_day(self):
-        return datetime.now().day
-    
-    # every 400 -> 29 days feb
-    # every 100 -> not 29 days feb
+    return month
 
-    def count_days(self, month = datetime.now().month, year = datetime.now().year)
-        if (month < 8)&(month != 2):
-            days = 30 + (month % 2) # 365//12 = 30
-        elif month > 7:
-            days = 30 + int( not(month % 2) )
-        else: #feb
-            if (year % 400 == 0):
-                days = 29
-            elif (year % 4 == 0)&(year % 100 != 0):
-                days = 29
-            else:
-                days = 28
-
-        return days

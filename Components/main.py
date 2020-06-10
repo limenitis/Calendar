@@ -1,9 +1,8 @@
 # ++++++++++++++++++++++++++++++++++++++++++++
 # components
-import calendar
-from datetime import datetime
 from options_m import *
-# from calendar_m import *
+from calendar_m import *
+# from datetime import datetime
 # ++++++++++++++++++++++++++++++++++++++++++++
 # config window
 from kivy.config import Config
@@ -28,11 +27,12 @@ from kivy.uix.gridlayout import GridLayout
 
 # remove_widget
 
-class CalendarApp(App):
+class MyCalendarApp(App):
 
     def build(self):
 
-        #self.icon = 'myicon.png'
+        self.icon = 'cal.ico'
+        # self.icon = 'mycalendar.png'
 
         # Main window
         root = BoxLayout(spacing = 3)
@@ -41,12 +41,12 @@ class CalendarApp(App):
         row = 6
         col = 7
         GridL = GridLayout(rows = row, cols = col, spacing = 3)
-        months = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)
+        month = days_in_month()         # (list days in month)
         for i in range(row-1):
             for j in range(col):
                 GridL.add_widget( 
                     Button  (
-                    text = str(months[i][j])
+                    text = str(month[i][j])
                     #on_press = Cal.day_on_display() 
                             )   
                                 )
@@ -67,7 +67,7 @@ class CalendarApp(App):
             4 : 'Окно с делами'
         }
 
-        Menu_options = GridLayout(rows = 10, cols = 1, spacing = 3)
+        Menu_options = GridLayout(cols = 1, spacing = 3)
         for i in range(1, len(name_options)+1):
             Menu_options.add_widget( Button(text = name_options[i], on_press = option[i]) )
         Menu.add_widget(Menu_options)
@@ -79,5 +79,5 @@ class CalendarApp(App):
 
 
 if __name__ == "__main__":
-    CalendarApp().run()
+    MyCalendarApp().run()
 
