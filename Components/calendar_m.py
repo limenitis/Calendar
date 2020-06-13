@@ -18,7 +18,6 @@ def days_in_month():
     for i in last_month[-1]:
         if i != 0:
             end_last_month.append(i)
-            print(end_last_month)
 
     # change first week in current month
     c = 0 
