@@ -18,3 +18,6 @@ class Options():
     def update_task(self):
         print('update_task work')
         
+        
+def rgb(r,g,b,invis):
+    return (r/255,g/255,b/255,invis)

@@ -1,10 +1,10 @@
 from datetime import datetime
 import calendar
 
-def days_in_month():
-    last_month = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)
-    month = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)    
-
+def days_in_month (
+    last_month = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month),
+    month      = calendar.Calendar().monthdayscalendar(datetime.now().year, datetime.now().month)  ):
+        
     # change end current month
     c = 1
     for i in month[-1]:
