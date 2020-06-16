@@ -17,7 +17,50 @@ class Options():
 
     def update_task(self):
         print('update_task work')
+
+
+def convert_str_to_int(string):
+    r = ''
+    g = ''
+    b = ''
+    invis = ''
+
+    switch = 0
+
+    for symbol in string:
+        if (symbol != ','):
+            if symbol == ' ':
+                continue
+
+            elif switch == 0:
+                r = r + symbol
+
+            elif switch == 1:
+                g = g + symbol
+
+            elif switch == 2:
+                b = b + symbol
+
+            elif  switch == 3:
+                invis = invis + symbol
         
-        
-def rgb(r,g,b,invis):
+        elif(symbol == ','):
+            switch += 1
+
+    r = int(r)
+    g = int(g)
+    b = int(b)
+    
+    if invis != '':
+        invis = float(invis)
+    else:
+        invis = 1
+
+    return r, g, b, invis
+
+def rgb(r = None, g = None, b = None, invis = 1):
+
+    if (type(r) == str):
+       r, g, b, invis = convert_str_to_int(r)
+
     return (r/255,g/255,b/255,invis)
