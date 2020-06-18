@@ -1,6 +1,9 @@
 # Adout programm
 It's programm for time managing
 
+# Attention
+it's only calendar app
+
 # Adout versions
 #### v 1.2.3.4
 * 1 - version broke reverse compatibility
