@@ -1,35 +1,100 @@
 # ++++++++++++++++++++++++++++++++++++++++++++
-# components
-from options_m import Options
-from options_m import rgb
-from calendar_m import UCalendar
-from calendar_m import *
-from datetime import datetime
-# ++++++++++++++++++++++++++++++++++++++++++++
 # config window
 from kivy.config import Config
-Config.set('graphics', 'resizable', '1');
-Config.set('graphics', 'width', '900');
-Config.set('graphics', 'height', '400');
+Config.set('graphics', 'resizable', '1')
+Config.set('graphics', 'width', '900')
+Config.set('graphics', 'height', '400')
 # ++++++++++++++++++++++++++++++++++++++++++++
 # kivy libs
-from kivy.app import App
-from kivy.uix.label import Label
-# from kivy.uix.popup import Popup # всплывающее окно
-# from kivy.uix.bubble import Bubble # context menu
-# from kivy.uix.widget import Widget
-from kivy.uix.button import Button
-# from kivy.uix.spinner import Spinner # выпадающий список
-# from kivy.uix.dropdown import DropDown # выпадающий список
-from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.gridlayout import GridLayout
-# from kivy.uix.screenmanager import ScreenManager # экраны/screens
-# from kivy.uix.tabbedpanel import TabbedPanel # табы/вкладки  
+from kivymd.uix.boxlayout import BoxLayout
+from kivymd.uix.gridlayout import GridLayout
+from kivymd.uix.floatlayout import FloatLayout
+from kivymd.uix.button import Button
+from kivy.lang import Builder
+from kivymd.app import MDApp
+# ++++++++++++++++++++++++++++++++++++++++++++
+# python libs
+import configparser
+# ++++++++++++++++++++++++++++++++++++++++++++
+# modules programm
+from calendar_module import*
 # ++++++++++++++++++++++++++++++++++++++++++++
 
-# remove_widget
+class DB_API(object):
+    """docstring for DB_API"""
+    def __init__(self, arg):
+        super(DB_API, self).__init__()
+        
+        self.arg = arg
+        
 
-class MyCalendarApp(App):
+
+
+class Options():
+
+    def new_event(self):
+        print('new_event work')
+        
+    def new_task(self):
+        print('new_task work')
+        
+    def change_layout_calendar(self):
+        print('change_layoyt_calendar work')
+
+    def change_layout_tasks(self):
+        print('change_layoyt_tasks work')
+
+    def delete_task(self):
+        print('delete_task work')
+
+    def update_task(self):
+        print('update_task work')
+
+
+class Main_menu(BoxLayout):
+    """docstring for Menu"""
+    def __init__(self, **kwargs):
+        super(Main_menu, self).__init__(**kwargs)
+
+        Opt = Options()
+
+        config = configparser.ConfigParser()
+        config.read("settings.ini")
+        name_interface = config['language']
+        color_interface = config['colors']
+
+        option = {
+            0: lambda x: Opt.new_event(),
+            1: lambda x: Opt.new_task(),
+            2: lambda x: Opt.change_layout_calendar(),
+            3: lambda x: Opt.change_layout_tasks()
+        }
+        name_options = {
+            0: name_interface['new_event'],
+            1: name_interface['new_task'],
+            2: name_interface['change_layout_calendar'],
+            3: name_interface['change_layout_tasks']
+        }
+
+        for i in range(len(name_options)):
+            self.add_widget( Button(text = name_options[i],
+                                    on_press = option[i],
+                                    background_color = rgb(color_interface['menu_options']),
+                                    background_normal = '' ) )
+
+
+class Root(BoxLayout):
+    def __init__(self, **kwargs):
+        super(Root, self).__init__(**kwargs)
+    
+        Menu = Main_menu( orientation = 'vertical', size_hint = (.1, 1), spacing = 1 )
+        Calendar = UCalendar( cols = 7, rows = 5, spacing = 1 )
+
+        self.add_widget(Menu)
+        self.add_widget(Calendar)
+
+
+class MyCalendarApp(MDApp):
 
     def build(self):
 
@@ -37,51 +102,11 @@ class MyCalendarApp(App):
 
         config = configparser.ConfigParser()
         config.read("settings.ini")
-        
-        # Main window
-        root = BoxLayout(spacing = 1)
-
-        # Context menu
-        # context_menu = Bubble()
-        
-        # Calendar window
-
-        Calendar = UCalendar()
-        Calendar.init_days()
-
-        # Menu window
-        Menu = BoxLayout( size_hint = (.2, 1) )
-        Opt = Options()
-        option = {
-            0 : lambda x: Opt.new_event(),
-            1 : lambda x: Opt.new_task(),
-            2 : lambda x: Opt.change_layoyt_calendar(),
-            3 : lambda x: Opt.change_layoyt_tasks()
-        }
-        name_interface = config['language']
-        name_options = {
-            0 : name_interface['new_event'],
-            1 : name_interface['new_task'],
-            2 : name_interface['change_layoyt_calendar'],
-            3 : name_interface['change_layoyt_tasks']
-        }
-
         color_interface = config['colors']
-        Menu_options = GridLayout(cols = 1, spacing = 2)
-        for i in range(len(name_options)):
-            Menu_options.add_widget( Button(    text = name_options[i], 
-                                                on_press = option[i], 
-                                                background_color = rgb(color_interface['menu_options']),
-                                                background_normal = '' ) )
-        Menu.add_widget(Menu_options)
-
         
+        root = Root(padding = 10)
 
-        root.add_widget(Menu)
-        root.add_widget(Calendar)
         return root
-
-Builder.load_file("design.kv")
 
 if __name__ == "__main__":
     MyCalendarApp().run()
